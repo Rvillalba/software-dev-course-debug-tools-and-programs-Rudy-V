@@ -6,22 +6,29 @@ const cart = [
 
 function calculateTotal(cartItems) {
   let total = 0;
-  for (let i = 0; i <= cartItems.length; i++) { // Bug: <= should be <
+  for (let i = 0; i < cartItems.length; i++) { // <= should be <
       total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration
   }
   return total;
 }
 
 function applyDiscount(total, discountRate) {
-  return total - total * discountRate; // Bug: Missing validation for discountRate
+  if (discountRate < 0 || discountRate > 1){
+    console.error("Invalid discount. Please enter a number between 0 and 1.");// Added validation for discountRate
+  }
+  return total - total * discountRate; 
 }
 
 function generateReceipt(cartItems, total) {
+  if (isNaN(total)) { // Added validation for data type
+    console.error("Invalid entry.");
+    return "Error";
+  }
   let receipt = "Items:\n";
   cartItems.forEach(item => {
       receipt += `${item.name}: $${item.price}\n`;
   });
-  receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
+  receipt += `Total: $${total.toFixed(2)}`; r
   return receipt;
 }
 
